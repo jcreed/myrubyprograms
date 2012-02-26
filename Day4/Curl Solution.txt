@@ -1,0 +1,4 @@
+	
+my solution was:
+
+curl -data str=reed_jeff http://sinatra2.hectorsq.com/reverse
