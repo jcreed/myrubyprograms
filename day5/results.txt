@@ -1,0 +1,66 @@
+Here is my solution, I used regex matching with word delimiters.
+
+
+
+### net/http
+require 'net/http'
+
+url = URI.parse('http://satishtalim.github.com/webruby/chapter3.html')
+
+Net::HTTP.start(url.host, url.port) do |http|
+req = Net::HTTP::Get.new(url.path)
+text = http.request(req).body
+result = text.scan(/\bthe\b/i)
+puts "Using net/http : #{result.length}"
+end
+
+## open uri
+
+require 'open-uri'
+
+f = open('http://satishtalim.github.com/webruby/chapter3.html')
+text = f.readlines.join
+result = text.scan(/\bthe\b/i)
+puts "Using open uri : #{result.length}"
+
+f.close()
+
+# hpricot
+
+require 'open-uri'
+require 'hpricot'
+
+page = Hpricot(open('http://satishtalim.github.com/webruby/chapter3.html'))
+text = page.at(:html).to_s
+result = text.scan(/\bthe\b/i)
+puts "Using hpricot : #{result.length}"
+
+# nokogiri
+
+require 'nokogiri'
+require 'open-uri'
+doc = Nokogiri::HTML(open('http://satishtalim.github.com/webruby/chapter3.html'))
+
+text = doc.css('html')[0].content
+result = text.scan(/\bthe\b/i)
+
+puts "Using nokogiri : #{result.length}"
+
+
+
+I didn't use the ruby code formatting because it modified the URL's like this:
+
+# nokogiri
+ 
+require 'nokogiri'
+require 'open-uri'
+doc = Nokogiri::HTML(;open(;'<a href="http://satishtalim.github.com/webruby/chapter3.html'))" target="_blank">http://satishtalim.github.com/webruby/chapter3.html'););</a>
+ 
+text = doc.css(;'html');[;0];.content
+result = text.scan(;/\bthe\b/i);
+ 
+puts "Using nokogiri : #{result.length}"
+
+
+Show parent | Reply
+See this post in context
